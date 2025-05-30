@@ -1,14 +1,17 @@
+// src/App.tsx
+import React, { useEffect, useState } from 'react';
+import ComingSoon from './Comingsoon';
+import Maintenance from './Maintenance';
 
+const App: React.FC = () => {
+  const [isWeekend, setIsWeekend] = useState(false);
 
-import './App.css'
+  useEffect(() => {
+    const today = new Date().getDay();
+    setIsWeekend(today === 0 || today === 6); // 0 = Sunday, 6 = Saturday
+  }, []);
 
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-black-600">Tailwind is working!</h1>
-    </div>
-  )
-}
+  return isWeekend ? <Maintenance /> : <ComingSoon />;
+};
 
 export default App;
-
