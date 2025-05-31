@@ -1,27 +1,15 @@
-// src/components/ComingSoon/Bottom.tsx
 import React from 'react';
 
 const Bottom: React.FC = () => {
   return (
-    <section className="bg-black text-white py-12 px-6 text-center">
-      <h3 className="text-2xl font-semibold mb-6">Stay In The Loop</h3>
+    <section className="bg-gradient-to-t from-black via-[#0a0a0a] to-black text-white pt-0 pb-12 px-6 text-center">
+      {/* Zuliam with fade-in + shine */}
+      <h2 className="text-2xl md:text-3xl font-normal font-serif mb-6 text-[#f5f5f5] tracking-wide relative inline-block overflow-hidden animate-fade-in-scale shine">
+        züliäm
+      </h2>
 
-      <form className="max-w-md mx-auto flex flex-col sm:flex-row items-center gap-4">
-        <input
-          type="email"
-          placeholder="Your email"
-          className="w-full px-4 py-2 text-black rounded-md focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="bg-orange-600 hover:bg-orange-700 px-6 py-2 rounded-md font-semibold"
-        >
-          Notify Me
-        </button>
-      </form>
-
-      <p className="mt-6 text-sm">
-        Contact us at <a href="mailto:ask@zuliam.com" className="underline">ask@zuliam.com</a>
+      <p className="text-gray-300 text-sm">
+        Contact us at <a href="mailto:ask@zuliam.com" className="underline">ask@byzuliam.com</a>
       </p>
     </section>
   );
