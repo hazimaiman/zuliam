@@ -1,19 +1,41 @@
-// src/pages/Maintenance.tsx
 import React from 'react';
+import Lottie from 'lottie-react';
+import maintenanceAnimation from '../src/assets/Animation - 1748650660383.json';
+import { MdEmail } from 'react-icons/md';
 
 const Maintenance: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-screen bg-white text-center px-4">
-      <div>
-        <img
-          src="/maintenance.png"
-          alt="Maintenance"
-          className="mx-auto max-w-xs animate-bounce"
+    <div className="relative min-h-screen bg-white text-[#2f2f2f] font-serif px-4">
+      {/* Top-left branding */}
+      <div className="absolute top-6 left-6 text-3xl font-semibold italic tracking-wide">
+        züliäm<span className="text-4xl align-super">.</span>
+      </div>
+
+      {/* Main content block, centered */}
+      <div className="flex flex-col items-center justify-center h-screen text-center">
+        {/* Animation */}
+        <Lottie
+          animationData={maintenanceAnimation}
+          loop
+          className="max-w-xs mx-auto mb-6"
         />
-        <h1 className="text-4xl font-bold mt-6 text-blue-700">Page Under Maintenance</h1>
-        <p className="mt-4 text-gray-600">
+
+        {/* Title */}
+        <h1 className="text-4xl font-bold mb-4">Page Under Maintenance</h1>
+
+        {/* Description */}
+        <p className="text-[#444] mb-6">
+          Sorry for the inconvenience! <br />
           We’re currently doing some updates. Please check back soon.
         </p>
+
+        {/* Contact */}
+        <div className="flex items-center justify-center text-[#2f2f2f]">
+          <MdEmail className="mr-2 text-xl" />
+          <a href="mailto:ask@zuliam.com" className="underline hover:text-indigo-800">
+            ask@byzuliam.com
+          </a>
+        </div>
       </div>
     </div>
   );

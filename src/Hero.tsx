@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import background from '../src/assets/Kuala_Lumpur.jpg'; // ✅ ensure this file exists
 
 const Hero: React.FC = () => {
+  // Countdown State
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -9,9 +10,13 @@ const Hero: React.FC = () => {
     seconds: 0,
   });
 
-  // ✅ Fixed target date — calculated ONCE outside useEffect
-  const targetDate = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000); // 100 days from now
+  // Dot Animation State
+  const [dots, setDots] = useState('');
 
+  // Target date: 100 days from now
+  const targetDate = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+
+  // Countdown Timer Effect
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -30,11 +35,19 @@ const Hero: React.FC = () => {
       setTimeLeft({ days, hours, minutes, seconds });
     };
 
-    updateCountdown(); // initial call
+    updateCountdown(); // Initial call
     const interval = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(interval);
-  }, []); // ✅ empty deps
+  }, []);
+
+  // Dot Animation Effect
+  useEffect(() => {
+    const dotInterval = setInterval(() => {
+      setDots(prev => (prev.length < 3 ? prev + '.' : ''));
+    }, 700); // Adjust speed here
+
+    return () => clearInterval(dotInterval);
+  }, []);
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-white text-center overflow-hidden px-4">
@@ -48,8 +61,13 @@ const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20 space-y-6">
-        <h1 className="text-lg uppercase tracking-widest">züliäm</h1>
-        <h2 className="text-6xl md:text-7xl font-bold">Coming Soon</h2>
+      <h1 className="text-lg tracking-widest relative inline-block after:content-[''] after:block after:h-[2px] after:bg-white/30 after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-500 animate-pulse">
+        züliäm
+      </h1>
+        <h2 className="text-6xl md:text-7xl font-bold">
+          Coming Soon {dots}
+        </h2>
+
         <p className="text-gray-300 text-sm">Create something extraordinary — we're getting ready.</p>
 
         {/* Countdown */}
@@ -75,9 +93,12 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* <p className="text-xs text-gray-400 mt-4">
+        {/* Optional Contact Info */}
+        {/* 
+        <p className="text-xs text-gray-400 mt-4">
           Contact us at <a className="underline" href="mailto:ask@zuliam.com">ask@zuliam.com</a>
-        </p> */}
+        </p> 
+        */}
       </div>
     </section>
   );

@@ -11,7 +11,7 @@ const App: React.FC = () => {
     setIsWeekend(today === 0 || today === 6); // 0 = Sunday, 6 = Saturday
   }, []);
 
-  return isWeekend ? <Maintenance /> : <ComingSoon />;
+  return isWeekend ?  <Maintenance /> : <ComingSoon />;
 };
 
 export default App;
