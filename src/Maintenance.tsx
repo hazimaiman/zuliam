@@ -4,6 +4,8 @@ import maintenanceAnimation from '../src/assets/Animation - 1748650660383.json';
 import { MdEmail } from 'react-icons/md';
 
 const Maintenance: React.FC = () => {
+  const year = new Date().getFullYear();
+
   return (
     <div className="relative min-h-screen bg-white text-[#2f2f2f] font-serif px-4">
       {/* Top-left branding */}
@@ -36,6 +38,11 @@ const Maintenance: React.FC = () => {
             ask@byzuliam.com
           </a>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
+        © {year}, <strong>zuliäm</strong> — Powered by <strong>Hazim Aiman</strong>
       </div>
     </div>
   );
