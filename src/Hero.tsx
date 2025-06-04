@@ -40,14 +40,27 @@ const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Dot Animation Effect
+  // Dot Animation Effect with delay after "..."
   useEffect(() => {
-    const dotInterval = setInterval(() => {
-      setDots(prev => (prev.length < 3 ? prev + '.' : ''));
-    }, 700); // Adjust speed here
+    let index = 0;
+    let delay = false;
 
-    return () => clearInterval(dotInterval);
-  }, []);
+    const interval = setInterval(() => {
+      if (dots === '...' && !delay) {
+        delay = true;
+        setTimeout(() => {
+          setDots('');
+          index = 0;
+          delay = false;
+        }, 1000); // Delay after full dots
+      } else if (!delay && dots.length < 3) {
+        setDots(prev => prev + '.');
+        index++;
+      }
+    }, 500); // Dot animation speed
+
+    return () => clearInterval(interval);
+  }, [dots]);
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-white text-center overflow-hidden px-4">
@@ -61,11 +74,11 @@ const Hero: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20 space-y-6">
-      <h1 className="text-lg tracking-widest relative inline-block after:content-[''] after:block after:h-[2px] after:bg-white/30 after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-500 animate-pulse">
-        züliäm
-      </h1>
+        <h1 className="text-lg tracking-widest relative inline-block after:content-[''] after:block after:h-[2px] after:bg-white/30 after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-500 animate-pulse">
+          züliäm
+        </h1>
         <h2 className="text-6xl md:text-7xl font-bold">
-          Coming Soon {dots}
+          Coming Soon{dots}
         </h2>
 
         <p className="text-gray-300 text-sm">Create something extraordinary — we're getting ready.</p>
@@ -94,10 +107,10 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Optional Contact Info */}
-        {/* 
+        {/*
         <p className="text-xs text-gray-400 mt-4">
           Contact us at <a className="underline" href="mailto:ask@zuliam.com">ask@zuliam.com</a>
-        </p> 
+        </p>
         */}
       </div>
     </section>
