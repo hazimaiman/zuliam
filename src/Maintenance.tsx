@@ -42,7 +42,7 @@ const Maintenance: React.FC = () => {
 
       {/* Footer */}
       <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
-        © {year}, <strong>zuliäm</strong> —{' '}
+        © {year}, <strong>zuliäm corporäte</strong> [EB20250611003833]—{' '}
         <a
           href="https://www.hazimaiman.xyz"
           className="font-bold text-gray-500 hover:underline transition-all duration-200"

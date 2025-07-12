@@ -14,7 +14,7 @@ const Bottom: React.FC = () => {
       </p>
 
       <p className="text-gray-500 text-xs mt-6">
-        © {year}, <strong>zuliäm</strong> —{' '}
+        © {year}, <strong>zuliäm corporäte</strong> [EB20250611003833]—{' '}
         <a
           href="https://www.hazimaiman.xyz"
           className="font-bold text-gray-500 hover:underline transition-all duration-200"

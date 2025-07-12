@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import background from '../src/assets/Kuala_Lumpur.jpg'; // ✅ ensure this file exists
+import background from '../src/assets/Kuala_Lumpur.jpg';
 
 const Hero: React.FC = () => {
-  // Countdown State
+  // Countdown state
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -10,14 +10,31 @@ const Hero: React.FC = () => {
     seconds: 0,
   });
 
-  // Dot Animation State
+  // Dot animation state
   const [dots, setDots] = useState('');
 
-  // Target date: 100 days from now
-  const targetDate = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+  // Target date state (persisted via localStorage)
+  const [targetDate, setTargetDate] = useState<Date | null>(null);
 
-  // Countdown Timer Effect
+  // Load or create target date
   useEffect(() => {
+    const stored = localStorage.getItem('launchDate');
+
+    if (stored) {
+      // Use stored launch date
+      setTargetDate(new Date(stored));
+    } else {
+      // Set new launch date (100 days from now)
+      const newDate = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+      localStorage.setItem('launchDate', newDate.toISOString());
+      setTargetDate(newDate);
+    }
+  }, []);
+
+  // Countdown timer logic
+  useEffect(() => {
+    if (!targetDate) return;
+
     const updateCountdown = () => {
       const now = new Date().getTime();
       const distance = targetDate.getTime() - now;
@@ -35,12 +52,12 @@ const Hero: React.FC = () => {
       setTimeLeft({ days, hours, minutes, seconds });
     };
 
-    updateCountdown(); // Initial call
+    updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [targetDate]);
 
-  // Dot Animation Effect with delay after "..."
+  // Dot animation logic
   useEffect(() => {
     let index = 0;
     let delay = false;
@@ -52,19 +69,19 @@ const Hero: React.FC = () => {
           setDots('');
           index = 0;
           delay = false;
-        }, 1000); // Delay after full dots
+        }, 1000); // 1s delay after full dots
       } else if (!delay && dots.length < 3) {
         setDots(prev => prev + '.');
         index++;
       }
-    }, 500); // Dot animation speed
+    }, 500);
 
     return () => clearInterval(interval);
   }, [dots]);
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-white text-center overflow-hidden px-4">
-      {/* Background */}
+      {/* Background image and overlays */}
       <div
         className="absolute inset-0 bg-cover bg-center blur-sm"
         style={{ backgroundImage: `url(${background})` }}
@@ -83,7 +100,7 @@ const Hero: React.FC = () => {
 
         <p className="text-gray-300 text-sm">Create something extraordinary — we're getting ready.</p>
 
-        {/* Countdown */}
+        {/* Countdown Timer */}
         <div className="flex gap-4 justify-center mt-6 text-xl md:text-2xl font-semibold">
           <div className="text-center">
             <div>{timeLeft.days}</div>
@@ -105,14 +122,20 @@ const Hero: React.FC = () => {
             <div className="text-sm font-normal">Seconds</div>
           </div>
         </div>
-
-        {/* Optional Contact Info */}
-        {/*
-        <p className="text-xs text-gray-400 mt-4">
-          Contact us at <a className="underline" href="mailto:ask@zuliam.com">ask@zuliam.com</a>
-        </p>
-        */}
       </div>
+
+      {/* ✅ Dev-only reset button */}
+      {import.meta.env.MODE === 'development' && (
+        <button
+          onClick={() => {
+            localStorage.removeItem('launchDate');
+            window.location.reload();
+          }}
+          className="text-xs text-red-400 underline absolute top-4 right-4"
+        >
+          Reset Countdown (Dev Only)
+        </button>
+      )}
     </section>
   );
 };
