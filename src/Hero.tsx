@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import background from '../src/assets/Kuala_Lumpur.jpg';
+import React, { useEffect, useState } from "react";
+import background from "../src/assets/Kuala_Lumpur.jpg";
+import ZuliChat from "./components/ZuliChat";
 
 const Hero: React.FC = () => {
-  // Countdown state
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
-
-  // Dot animation state
-  const [dots, setDots] = useState('');
-
-  // Target date state (persisted via localStorage)
+  const [dots, setDots] = useState("");
   const [targetDate, setTargetDate] = useState<Date | null>(null);
 
   // Load or create target date
   useEffect(() => {
-    const stored = localStorage.getItem('launchDate');
-
+    const stored = localStorage.getItem("launchDate");
     if (stored) {
-      // Use stored launch date
       setTargetDate(new Date(stored));
     } else {
-      // Set new launch date (100 days from now)
       const newDate = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
-      localStorage.setItem('launchDate', newDate.toISOString());
+      localStorage.setItem("launchDate", newDate.toISOString());
       setTargetDate(newDate);
     }
   }, []);
@@ -34,9 +27,8 @@ const Hero: React.FC = () => {
   // Countdown timer logic
   useEffect(() => {
     if (!targetDate) return;
-
     const updateCountdown = () => {
-      const now = new Date().getTime();
+      const now = Date.now();
       const distance = targetDate.getTime() - now;
 
       if (distance <= 0) {
@@ -59,46 +51,41 @@ const Hero: React.FC = () => {
 
   // Dot animation logic
   useEffect(() => {
-    let index = 0;
     let delay = false;
-
     const interval = setInterval(() => {
-      if (dots === '...' && !delay) {
+      if (dots === "..." && !delay) {
         delay = true;
         setTimeout(() => {
-          setDots('');
-          index = 0;
+          setDots("");
           delay = false;
-        }, 1000); // 1s delay after full dots
+        }, 1000);
       } else if (!delay && dots.length < 3) {
-        setDots(prev => prev + '.');
-        index++;
+        setDots((prev) => prev + ".");
       }
     }, 500);
-
     return () => clearInterval(interval);
   }, [dots]);
 
   return (
     <section className="relative h-screen flex flex-col justify-center items-center text-white text-center overflow-hidden px-4">
-      {/* Background image and overlays */}
+      {/* Background image and overlays (pointer-events disabled so chat is clickable) */}
       <div
-        className="absolute inset-0 bg-cover bg-center blur-sm"
+        className="absolute inset-0 bg-cover bg-center blur-sm pointer-events-none"
         style={{ backgroundImage: `url(${background})` }}
       ></div>
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-10"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
 
       {/* Content */}
       <div className="relative z-20 space-y-6">
         <h1 className="text-lg tracking-widest relative inline-block after:content-[''] after:block after:h-[2px] after:bg-white/30 after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-500 animate-pulse">
           züliäm
         </h1>
-        <h2 className="text-6xl md:text-7xl font-bold">
-          Coming Soon{dots}
-        </h2>
+        <h2 className="text-6xl md:text-7xl font-bold">Coming Soon{dots}</h2>
 
-        <p className="text-gray-300 text-sm">Create something extraordinary — we're getting ready.</p>
+        <p className="text-gray-300 text-sm">
+          Create something extraordinary — we're getting ready.
+        </p>
 
         {/* Countdown Timer */}
         <div className="flex gap-4 justify-center mt-6 text-xl md:text-2xl font-semibold">
@@ -108,27 +95,30 @@ const Hero: React.FC = () => {
           </div>
           <div>/</div>
           <div className="text-center">
-            <div>{timeLeft.hours.toString().padStart(2, '0')}</div>
+            <div>{timeLeft.hours.toString().padStart(2, "0")}</div>
             <div className="text-sm font-normal">Hours</div>
           </div>
           <div>/</div>
           <div className="text-center">
-            <div>{timeLeft.minutes.toString().padStart(2, '0')}</div>
+            <div>{timeLeft.minutes.toString().padStart(2, "0")}</div>
             <div className="text-sm font-normal">Minutes</div>
           </div>
           <div>/</div>
           <div className="text-center">
-            <div>{timeLeft.seconds.toString().padStart(2, '0')}</div>
+            <div>{timeLeft.seconds.toString().padStart(2, "0")}</div>
             <div className="text-sm font-normal">Seconds</div>
           </div>
         </div>
       </div>
 
-      {/* ✅ Dev-only reset button */}
-      {import.meta.env.MODE === 'development' && (
+      {/* Reusable chatbot */}
+      <ZuliChat triggerText="Ask Zuli" placement="bottom-left" theme="dark" />
+
+      {/* Dev-only reset */}
+      {import.meta.env.MODE === "development" && (
         <button
           onClick={() => {
-            localStorage.removeItem('launchDate');
+            localStorage.removeItem("launchDate");
             window.location.reload();
           }}
           className="text-xs text-red-400 underline absolute top-4 right-4"
@@ -141,3 +131,4 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
+
